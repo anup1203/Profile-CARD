@@ -1,174 +1,245 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anup Yadav Profile Card</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Anup Yadav Professional Profile - Dark Theme</title>
+    <!-- Tailwind CSS for modern, responsive design --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Custom font import for aesthetics */
+        /* Custom font import: Inter for a professional look */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
             perspective: 1000px;
+            /* Dark Background */
+            background-color: #111827; /* bg-gray-900 */
         }
 
-        /* --- Global Animations --- */
+        /* --- 1. CARD & INITIAL ANIMATIONS --- */
 
+        /* Card Fade In */
         @keyframes fadeInScaleUp {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
         .animate-card-entry {
-            animation: fadeInScaleUp 0.6s ease-out forwards;
+            /* Smooth entry after 0.2s delay */
+            animation: fadeInScaleUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.2s forwards;
             transition: transform 0.1s linear, box-shadow 0.3s ease; 
         }
 
+        /* Header Image Slide Down */
         @keyframes slideDown {
             from { transform: translateY(-100%); }
             to { transform: translateY(0); }
         }
         .animate-header-slide {
             transform: translateY(-100%); 
-            animation: slideDown 0.5s ease-out 0.3s forwards;
+            animation: slideDown 0.5s ease-out 0.5s forwards; /* Starts 0.5s after page load */
         }
 
-        /* 3. Avatar Fade & Shadow Animation (Flash) and Hover Effect */
+        /* Avatar Fade & Flash */
         @keyframes avatarFlash {
             from { opacity: 0; box-shadow: 0 0 0 rgba(0,0,0,0); }
-            to { opacity: 1; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+            to { opacity: 1; box-shadow: 0 0 20px rgba(0,0,0,0.5); } /* Darker shadow for dark theme */
         }
         .avatar-styles {
-            /* Using 'cover' is generally best for fill, but 'contain' is guaranteed 100% visibility. */
-            /* Sticking with 'cover' for a great look, but we've fixed the positioning now. */
             object-fit: cover; 
-            object-position: center;
-            border-radius: 50%; /* Default: Circle */
+            border-radius: 50%;
             background-color: #f3f4f6;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease, border-radius 0.3s ease; 
         }
-
         .animate-avatar-flash {
-            animation: avatarFlash 0.4s ease-out 0.8s forwards;
+            /* Appears at 1.0s */
+            animation: avatarFlash 0.4s ease-out 1.0s forwards;
             opacity: 0; 
         }
         
-        /* Circle-to-square and zoom-in effect on hover */
-        .animate-avatar-flash:hover {
-            transform: scale(1.1); 
-            border-radius: 10%; 
-            box-shadow: 0 0 30px rgba(79, 70, 229, 0.6); 
+        /* --- 2. PROFESSIONAL TYPING ANIMATION (Typewriter Effect) --- */
+
+        /* Keyframes for the typing motion */
+        @keyframes typing {
+          from { width: 0 }
+          to { width: 100% }
         }
 
-        /* 4. Content Slide Up (Wave-in Effect) - kept as-is */
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Keyframes for the stylish cursor (glowing shadow for modern look) */
+        @keyframes blink-cursor-shadow {
+          from, to { text-shadow: 0 0 0 transparent; }
+          50% { text-shadow: 0 0 10px rgba(99, 102, 241, 0.7), 0 0 20px rgba(99, 102, 241, 0.3); } /* Light Indigo Glow */
         }
-        .animate-wave-item {
-            animation: slideUpFade 0.5s ease-out forwards;
+
+        .typing-line {
+            display: inline-block;
+            overflow: hidden; /* This is key for the typewriter effect */
+            white-space: nowrap; 
+            width: fit-content;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 100%;
+            /* Initially hide the text by setting width to 0 (overwritten by animation) */
+            width: 0; 
+        }
+
+        /* Line 1: Anup Yadav (10 characters) - Start 1.5s after card starts loading */
+        .type-1 {
+            animation: 
+              typing 0.8s steps(10, end) 1.5s forwards; 
+        }
+
+        /* Line 2: Data Science / Data Analyst (32 characters) - Start 2.3s after type-1 finishes */
+        .type-2 {
+            /* Start: 1.5s + 0.8s (duration) + 0.2s (pause) = 2.5s */
+            animation: 
+              typing 1.5s steps(32, end) 2.5s forwards;
+        }
+
+        /* Line 3: IIT INDORE (10 characters) - Start 4.0s after type-2 finishes */
+        .type-3 {
+            /* Start: 2.5s + 1.5s (duration) + 0.2s (pause) = 4.2s */
+            animation: 
+              typing 0.8s steps(10, end) 4.2s forwards;
+        }
+        
+        /* Apply Blinking Shadow Cursor to the element being currently typed */
+        .blinking-cursor::after {
+            content: '█'; /* A solid block character for the cursor */
             opacity: 0;
+            margin-left: -0.1em;
+            color: #6366F1; /* Indigo 500 color for professional accent */
+            animation: blink-cursor-shadow 0.75s step-end infinite;
         }
-        .delay-100 { animation-delay: 1.3s; }
-        .delay-200 { animation-delay: 1.4s; }
-        .delay-300 { animation-delay: 1.5s; }
-        .delay-400 { animation-delay: 1.6s; }
 
-        /* 5. Buttons Fade In - kept as-is */
-        @keyframes buttonFadeIn {
+        /* Fade-in for subsequent elements (Stats, Buttons, Socials) */
+        @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        .animate-button-fade {
-            animation: buttonFadeIn 0.5s ease-out 1.8s forwards;
+        .animate-fade-in-delayed {
             opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
         }
+        /* Delays are set after the full typing sequence ends (4.2s + 0.8s = 5.0s) */
+        .fade-delay-1 { animation-delay: 5.3s; } /* Stats */
+        .fade-delay-2 { animation-delay: 5.6s; } /* Buttons */
+        .fade-delay-3 { animation-delay: 5.9s; } /* Footer */
         
-        /* 6. Button and Social Link Hover Effects - kept as-is */
+        /* --- 3. HOVER & CLICK EFFECTS --- */
+
+        /* Button Hover Effects */
         .btn-animation {
             transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s ease-in-out, background-color 0.2s ease;
         }
         .btn-animation:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25); 
-        }
-        .social-link-animation {
-            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
-            color: #6B7280;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* Darker shadow on dark background */
         }
         .social-link-animation:hover {
             transform: scale(1.1);
-            color: #4F46E5; 
+            color: #6366F1; /* Indigo 500 */
+        }
+        /* Custom styles for social icons to match brand colors on hover for a more polished look */
+        .social-link-animation .fa-envelope:hover { color: #DB4437; /* Google Red for email if it's Gmail */ }
+        .social-link-animation .fa-linkedin-in:hover { color: #0A66C2; /* LinkedIn Blue */ }
+        .social-link-animation .fa-github:hover { color: #6e5494; /* GitHub Purple/Black */ }
+
+
+        /* Click Animation (Jiggle) */
+        @keyframes jiggle {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(1deg); }
+            50% { transform: scale(1.05) rotate(-1deg); }
+            75% { transform: scale(1.05) rotate(1deg); }
+            100% { transform: scale(1); }
+        }
+        .jiggle-and-redirect {
+            animation: jiggle 0.4s ease-in-out forwards;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.7); 
+        }
+
+        /* Hover Animation for Projects Section */
+        #projects-container .flex-1:first-child { 
+            padding: 4px 0; 
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out;
+            border-radius: 0.5rem; 
+            cursor: pointer; 
+        }
+        #projects-container .flex-1:first-child:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2); 
+            background-color: rgba(99, 102, 241, 0.1); 
+        }
+        #projects-container .flex-1:first-child:hover a {
+            transform: scale(1.05);
+            transition: transform 0.2s ease-out;
         }
     </style>
 </head>
-<body class="bg-black min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
 
-    <div id="profile-card" class="max-w-md w-full bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-lg animate-card-entry">
+    <!-- Profile Card Container (max-w-md for mobile, md:max-w-lg for desktop, bg-gray-800 for contrast) --><div id="profile-card" class="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl overflow-hidden md:max-w-lg animate-card-entry">
 
-        <div class="h-40 relative overflow-hidden"> 
+        <!-- Header/Banner Image Section --><div class="h-40 relative overflow-hidden"> 
             <div class="absolute inset-0 bg-cover bg-center animate-header-slide" 
-                 style="background-image: url('image1.png');">
+                style="background-image: url('image1.png');">
             </div>
 
-            <div class="absolute bottom-[-32px] left-1/2 transform -translate-x-1/2 z-10">
-                <img class="h-32 w-32 border-4 border-white animate-avatar-flash avatar-styles" 
+            <!-- Avatar positioned centrally over the banner border --><div class="absolute bottom-[-32px] left-1/2 transform -translate-x-1/2 z-10">
+                <img class="h-32 w-32 border-4 border-gray-900 animate-avatar-flash avatar-styles" 
                     src="image.jpg" 
                     alt="Anup Yadav Profile Picture"
-                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/9CA3AF/ffffff?text=👤';">
+                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/374151/D1D5DB?text=👤';">
             </div>
         </div>
 
         <div class="pt-[80px] pb-8 px-6 text-center">
             
-            <h1 class="text-3xl font-extrabold text-gray-900 leading-tight mb-1 animate-wave-item delay-100">
-                Anup Yadav
+            <!-- Typing Animation Section --><h1 class="text-3xl font-extrabold text-gray-100 leading-tight mb-1">
+                <!-- Line 1: Anup Yadav (Typing) --><span id="type-1-span" class="typing-line type-1">Anup Yadav</span>
             </h1>
-            <p class="text-indigo-600 font-medium text-lg mb-6 animate-wave-item delay-200">
-                Data Science / Data Analyst
+            <p class="text-indigo-400 font-medium text-lg mb-2">
+                <!-- Line 2: Data Science / Data Analyst (Typing) --><span id="type-2-span" class="typing-line type-2">Data Science / Data Analyst</span>
             </p>
 
-            <p class="text-gray-600 text-base mb-8 font-semibold animate-wave-item delay-300">
-                Anup Yadav: Data Science & AI Enthusiast
+            <p id="iit-indore" class="text-gray-400 text-base mb-6 font-semibold">
+                <!-- Line 3: IIT INDORE (Typing) --><span id="type-3-span" class="typing-line type-3">IIT INDORE</span>
             </p>
-
-            <div class="flex justify-between items-center border-t border-b border-gray-200 py-4 mb-8 animate-wave-item delay-400">
+            
+            <!-- Stats Container (Fades in after typing) --><div id="projects-container" class="flex justify-between items-center border-t border-b border-gray-700 py-4 mb-8 animate-fade-in-delayed fade-delay-1">
+                
                 <div class="flex-1 text-center">
-                    <span class="block text-xl font-bold text-gray-800">32</span>
-                    <span class="block text-sm text-gray-500">Projects</span>
+                    <a href="#" id="project-count" class="project-link block text-xl font-bold text-gray-100 hover:text-indigo-400 transition duration-150 ease-in-out">32</a>
+                    <a href="#" id="project-label" class="project-link block text-sm text-gray-400 hover:text-indigo-400 transition duration-150 ease-in-out">Projects</a>
                 </div>
-                <div class="flex-1 text-center border-l border-gray-200">
-                    <span class="block text-xl font-bold text-gray-800">1.5+</span>
-                    <span class="block text-sm text-gray-500">Years Exp</span>
+                <div class="flex-1 text-center border-l border-gray-700">
+                    <span class="block text-xl font-bold text-gray-100">1.5+</span>
+                    <span class="block text-sm text-gray-400">Years Exp</span>
                 </div>
             </div>
 
-            <div class="flex space-x-4 animate-button-fade">
-                <a href="ANUP YADAV (2).pdf" download="ANUP YADAV Resume.pdf" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-150 ease-in-out shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500/50 flex items-center justify-center btn-animation">
+            <!-- Buttons Container (Fades in after stats) --><div class="flex space-x-4 animate-button-fade animate-fade-in-delayed fade-delay-2">
+                <a href="ANUP YADAV (2).pdf" download="ANUP YADAV Resume.pdf" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition duration-150 ease-in-out shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500/50 flex items-center justify-center btn-animation">
                     RESUME
                 </a>
                 
-                <a href="https://anup-yadav-data-science-5ylb62d.gamma.site/" target="_blank" class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-3 rounded-xl transition duration-150 ease-in-out shadow-md focus:outline-none focus:ring-4 focus:ring-gray-300/50 flex items-center justify-center btn-animation">
+                <a href="https://anup-yadav-data-science-5ylb62d.gamma.site/" target="_blank" class="flex-1 bg-gray-700 border border-gray-600 hover:bg-gray-600 text-gray-100 font-semibold py-3 rounded-xl transition duration-150 ease-in-out shadow-md focus:outline-none focus:ring-4 focus:ring-gray-600/50 flex items-center justify-center btn-animation">
                     View Portfolio
                 </a>
             </div>
         </div>
 
-        <div class="p-6 bg-gray-50 rounded-b-xl border-t border-gray-200">
-            <div class="flex justify-around text-gray-500 text-sm">
-                <a href="mailto:anupyadav1569@gmail.com" class="social-link-animation flex items-center space-x-1">
-                    <i class="fas fa-envelope text-base"></i>
-                    <span>Email</span>
+        <!-- Social Links Container (Fades in after buttons) --><div class="p-6 bg-gray-700 rounded-b-xl border-t border-gray-700 animate-fade-in-delayed fade-delay-3">
+            <div class="flex justify-around text-gray-300 text-sm">
+                <!-- Email Icon: Using a generic fa-envelope as it's common for general email.
+                     If you want a specific Gmail icon, you would use <i class="fab fa-google"></i> and link to Gmail. --><a href="mailto:anupyadav1569@gmail.com" class="social-link-animation flex items-center space-x-1">
+                    <i class="fas fa-envelope text-lg"></i> <!-- Increased size for better visibility --><span>Email</span>
                 </a>
-                <a href="https://www.linkedin.com/in/anup1203" class="social-link-animation flex items-center space-x-1" target="_blank">
-                    <i class="fab fa-linkedin text-base"></i>
-                    <span>LinkedIn</span>
+                <!-- LinkedIn Icon: Changed to fa-linkedin-in for a slightly thinner, modern look --><a href="https://www.linkedin.com/in/anup1203" class="social-link-animation flex items-center space-x-1" target="_blank">
+                    <i class="fab fa-linkedin-in text-lg"></i> <!-- Increased size --><span>LinkedIn</span>
                 </a>
-                <a href="https://github.com/anup1203" class="social-link-animation flex items-center space-x-1" target="_blank">
-                    <i class="fab fa-github text-base"></i>
-                    <span>GitHub</span>
+                <!-- GitHub Icon: Standard fa-github --><a href="https://github.com/anup1203" class="social-link-animation flex items-center space-x-1" target="_blank">
+                    <i class="fab fa-github text-lg"></i> <!-- Increased size --><span>GitHub</span>
                 </a>
             </div>
         </div>
@@ -177,8 +248,17 @@
 
     <script>
         const card = document.getElementById('profile-card');
-        const MAX_TILT = 5; 
+        const projectsLinks = document.querySelectorAll('.project-link'); 
+        
+        // Element IDs for cursor control
+        const type1 = document.getElementById('type-1-span');
+        const type2 = document.getElementById('type-2-span');
+        const type3 = document.getElementById('type-3-span');
 
+        const MAX_TILT = 5; 
+        const REDIRECT_URL = 'https://github.com/anup1203?tab=repositories'; // Placeholder redirect URL
+
+        // --- 3D TILT EFFECT ---
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
@@ -188,21 +268,66 @@
             const offsetY = (e.clientY - centerY) / (rect.height / 2);
 
             const tiltY = -offsetX * MAX_TILT; 
-            const tiltX = offsetY * MAX_TILT;  
+            const tiltX = offsetY * MAX_TILT;  
 
             card.style.transform = `scale(1) perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+            /* Dynamic shadow adjusted for dark background */
             card.style.boxShadow = `
-                ${-tiltY * 1.5}px ${tiltX * 1.5}px 30px rgba(0, 0, 0, 0.4),
+                ${-tiltY * 0.5}px ${tiltX * 0.5}px 30px rgba(0, 0, 0, 0.5),
                 0 0 10px rgba(0, 0, 0, 0.1)
             `; 
         });
 
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'scale(1) perspective(1000px) rotateX(0deg) rotateY(0deg)';
-            card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)'; 
+            card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.4)'; // Reset shadow
+        });
+
+        // --- STYLISH CURSOR CONTROL ---
+        // This function adds the blinking cursor class and removes it when the typing animation finishes
+        function moveCursor(targetElement, delayTime, durationTime) {
+            setTimeout(() => {
+                // Add cursor when typing starts
+                targetElement.classList.add('blinking-cursor');
+                
+                // Set a timeout to remove the cursor exactly when the typing animation finishes
+                setTimeout(() => {
+                    targetElement.classList.remove('blinking-cursor');
+                }, durationTime * 1000); 
+            }, delayTime * 1000);
+        }
+
+        // Execution sequence for cursor (Matches CSS animation timings)
+        // 1. Anup Yadav (Start 1.5s, lasts 0.8s)
+        moveCursor(type1, 1.5, 0.8); 
+
+        // 2. Data Science / Data Analyst (Start 2.5s, lasts 1.5s)
+        moveCursor(type2, 2.5, 1.5);
+
+        // 3. IIT INDORE (Start 4.2s, lasts 0.8s)
+        moveCursor(type3, 4.2, 0.8);
+
+
+        // --- CLICK/ANIMATION HANDLER (Jiggle effect before redirect) ---
+        projectsLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                
+                const projectDiv = link.closest('.flex-1'); 
+
+                if (projectDiv) {
+                    projectDiv.classList.add('jiggle-and-redirect');
+
+                    const animationDuration = 500; 
+                    setTimeout(() => {
+                        // For a real app, replace REDIRECT_URL with the actual project link
+                        window.open(REDIRECT_URL, '_blank'); 
+                        
+                        projectDiv.classList.remove('jiggle-and-redirect');
+                    }, animationDuration);
+                }
+            });
         });
     </script>
 </body>
 </html>
-
-
